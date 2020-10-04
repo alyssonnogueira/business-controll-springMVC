@@ -26,21 +26,21 @@ public class TransacaoController {
 
   @PostMapping("/despesa")
   public ResponseEntity<Void> criarTransacao(@RequestBody DespesaDTO despesaDTO) {
-    this.transacaoService.criarTransacao(despesaDTO);
+    this.transacaoService.criarTransferencia(despesaDTO);
 
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
   @PostMapping("/receita")
   public ResponseEntity<Void> criarTransacao(@RequestBody ReceitaDTO receitaDTO) {
-    this.transacaoService.criarTransacao(receitaDTO);
+    this.transacaoService.criarTransferencia(receitaDTO);
 
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
   @PostMapping("/transferencia")
   public ResponseEntity<Void> criarTransacao(@RequestBody TransferenciaDTO transferenciaDTO) {
-    this.transacaoService.criarTransacao(transferenciaDTO);
+    this.transacaoService.criarTransferencia(transferenciaDTO);
 
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }

@@ -17,13 +17,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
 
 @Entity()
 @Table(name = "CONTA")
-@Where(clause = "DELETED_AT IS NULL")
+@Where(clause = "DATA_EXCLUSAO IS NULL")
+@SQLDelete(sql = "UPDATE CONTA SET DATA_EXCLUSAO=CURRENT_TIMESTAMP WHERE ID=?")
 @Getter
 @NoArgsConstructor
 public class Conta {
@@ -49,26 +51,26 @@ public class Conta {
   private TipoContaEnum tipoConta;
 
   @CreatedDate
-  @Column(name = "CREATED_AT", nullable = false, updatable = false)
+  @Column(name = "DATA_CRIACAO", nullable = false, updatable = false)
   private LocalDateTime dataCriacao;
 
   @UpdateTimestamp
-  @Column(name = "UPDATED_AT", nullable = false)
+  @Column(name = "DATA_ATUALIZACAO", nullable = false)
   private LocalDateTime dataAtualizacao;
 
   @UpdateTimestamp
-  @Column(name = "DELETED_AT")
+  @Column(name = "DATA_EXCLUSAO")
   private LocalDateTime dataExclusao;
 
   @ManyToOne()
   @JoinColumn(name = "ID_RESPONSAVEL", nullable = false)
   private Responsavel responsavel;
 
-  public Conta(String nome, BigDecimal saldoInicial, BigDecimal saldo,
-      TipoContaEnum tipoConta, Responsavel responsavel) {
+  public Conta(
+      String nome, BigDecimal saldoInicial, TipoContaEnum tipoConta, Responsavel responsavel) {
     this.nome = nome;
     this.saldoInicial = saldoInicial;
-    this.saldo = saldo;
+    this.saldo = saldoInicial;
     this.tipoConta = tipoConta;
     this.dataCriacao = LocalDateTime.now();
     this.dataAtualizacao = LocalDateTime.now();
@@ -80,15 +82,11 @@ public class Conta {
     this.dataAtualizacao = LocalDateTime.now();
   }
 
-  public void excluirConta() {
-    this.dataExclusao = LocalDateTime.now();
-  }
-
-  public void debitarSaldo(BigDecimal valor) {
+  public void creditarSaldo(BigDecimal valor) {
     this.saldo = this.saldo.add(valor);
   }
 
-  public void creditarSaldo(BigDecimal valor) {
+  public void debitarSaldo(BigDecimal valor) {
     this.saldo = this.saldo.subtract(valor);
   }
 }

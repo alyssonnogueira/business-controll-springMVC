@@ -5,8 +5,6 @@ import com.dbserver.treinamentospring.crosscutting.ResponsavelDTO;
 import com.dbserver.treinamentospring.dominio.Responsavel;
 import com.dbserver.treinamentospring.infra.IResponsavelConsultaRepository;
 import com.dbserver.treinamentospring.infra.IResponsavelRepository;
-import java.util.Optional;
-import javax.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service

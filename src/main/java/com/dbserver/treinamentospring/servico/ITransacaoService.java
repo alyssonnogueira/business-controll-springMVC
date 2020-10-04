@@ -6,11 +6,11 @@ import com.dbserver.treinamentospring.crosscutting.TransferenciaDTO;
 
 public interface ITransacaoService {
 
-  void criarTransacao(DespesaDTO despesaDTO);
+  void criarTransferencia(DespesaDTO despesaDTO);
 
-  void criarTransacao(ReceitaDTO receitaDTO);
+  void criarTransferencia(ReceitaDTO receitaDTO);
 
-  void criarTransacao(TransferenciaDTO transferenciaDTO);
+  void criarTransferencia(TransferenciaDTO transferenciaDTO);
 
   void excluirTransacao(Long transacaoId);
 

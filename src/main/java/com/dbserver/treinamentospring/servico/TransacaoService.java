@@ -21,6 +21,7 @@ public class TransacaoService implements ITransacaoService {
   private final ITransacaoRepository transacaoRepository;
   private final ITransacaoConsultaRepository transacaoConsultaRepository;
   private final IResponsavelConsultaRepository responsavelConsultaRepository;
+  private final IContaConsultaRepository contaConsultaRepository;
 
   public TransacaoService(
       ITransacaoRepository transacaoRepository,
@@ -33,10 +34,8 @@ public class TransacaoService implements ITransacaoService {
     this.contaConsultaRepository = contaConsultaRepository;
   }
 
-  private final IContaConsultaRepository contaConsultaRepository;
-
   @Override
-  public void criarTransacao(DespesaDTO despesaDTO) {
+  public void criarTransferencia(DespesaDTO despesaDTO) {
     Responsavel responsavel =
         this.responsavelConsultaRepository.obterResponsavel(despesaDTO.getIdResponsavel());
     Conta conta = this.contaConsultaRepository.obterConta(despesaDTO.getIdConta());
@@ -52,7 +51,7 @@ public class TransacaoService implements ITransacaoService {
   }
 
   @Override
-  public void criarTransacao(ReceitaDTO receitaDTO) {
+  public void criarTransferencia(ReceitaDTO receitaDTO) {
     Responsavel responsavel =
         this.responsavelConsultaRepository.obterResponsavel(receitaDTO.getIdResponsavel());
     Conta conta = this.contaConsultaRepository.obterConta(receitaDTO.getIdConta());
@@ -68,7 +67,7 @@ public class TransacaoService implements ITransacaoService {
   }
 
   @Override
-  public void criarTransacao(TransferenciaDTO transferenciaDTO) {
+  public void criarTransferencia(TransferenciaDTO transferenciaDTO) {
     Responsavel responsavel =
         this.responsavelConsultaRepository.obterResponsavel(transferenciaDTO.getIdResponsavel());
     Conta conta = this.contaConsultaRepository.obterConta(transferenciaDTO.getIdConta());
@@ -88,5 +87,6 @@ public class TransacaoService implements ITransacaoService {
   public void excluirTransacao(Long transacaoId) {
     Transacao transacao = this.transacaoConsultaRepository.obterTransacao(transacaoId);
     transacao.excluirTransacao();
+    this.transacaoRepository.save(transacao);
   }
 }

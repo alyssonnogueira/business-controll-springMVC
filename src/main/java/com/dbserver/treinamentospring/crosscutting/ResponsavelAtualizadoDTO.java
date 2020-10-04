@@ -15,4 +15,8 @@ public class ResponsavelAtualizadoDTO extends ResponsavelDTO {
   @NotNull
   Long id;
 
+  public ResponsavelAtualizadoDTO(Long id, String nome) {
+    super(nome);
+    this.id = id;
+  }
 }

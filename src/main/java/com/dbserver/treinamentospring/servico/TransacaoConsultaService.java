@@ -1,17 +1,16 @@
 package com.dbserver.treinamentospring.servico;
 
 import com.dbserver.treinamentospring.dominio.Transacao;
-import com.dbserver.treinamentospring.infra.TransacaoConsultaRepository;
+import com.dbserver.treinamentospring.infra.ITransacaoConsultaRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
 public class TransacaoConsultaService implements ITransacaoConsultaService {
 
-  private final TransacaoConsultaRepository transacaoConsultaRepository;
+  private final ITransacaoConsultaRepository transacaoConsultaRepository;
 
-  public TransacaoConsultaService(
-      TransacaoConsultaRepository transacaoConsultaRepository) {
+  public TransacaoConsultaService(ITransacaoConsultaRepository transacaoConsultaRepository) {
     this.transacaoConsultaRepository = transacaoConsultaRepository;
   }
 

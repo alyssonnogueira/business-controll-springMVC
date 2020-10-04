@@ -23,6 +23,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
@@ -32,7 +33,8 @@ import org.springframework.data.domain.DomainEvents;
 @Table(name = "TRANSACAO")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "TIPO_TRANSACAO", discriminatorType = DiscriminatorType.STRING)
-@Where(clause = "DELETED_AT IS NULL")
+@Where(clause = "DATA_EXCLUSAO IS NULL")
+@SQLDelete(sql = "UPDATE TRANSACAO SET DATA_EXCLUSAO=CURRENT_TIMESTAMP WHERE ID=?")
 @Getter
 @NoArgsConstructor
 public abstract class Transacao {
@@ -67,15 +69,15 @@ public abstract class Transacao {
   private TipoTransacaoEnum tipoTransacao;
 
   @CreatedDate
-  @Column(name = "CREATED_AT", nullable = false, updatable = false)
+  @Column(name = "DATA_CRIACAO", nullable = false, updatable = false)
   private LocalDateTime dataCriacao;
 
   @UpdateTimestamp
-  @Column(name = "UPDATED_AT", nullable = false)
+  @Column(name = "DATA_ATUALIZACAO", nullable = false)
   private LocalDateTime dataAtualizacao;
 
   @UpdateTimestamp
-  @Column(name = "DELETED_AT")
+  @Column(name = "DATA_EXCLUSAO")
   private LocalDateTime dataExclusao;
 
   protected Transacao(

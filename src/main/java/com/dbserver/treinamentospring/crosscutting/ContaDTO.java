@@ -21,9 +21,6 @@ public class ContaDTO {
   BigDecimal saldoInicial;
 
   @NotNull
-  BigDecimal saldo;
-
-  @NotNull
   TipoContaEnum tipoConta;
 
   @NotNull

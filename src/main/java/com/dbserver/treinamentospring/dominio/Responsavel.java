@@ -11,13 +11,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
 
 @Entity()
 @Table(name = "RESPONSAVEL")
 @Getter
 @NoArgsConstructor
+@Where(clause = "DATA_EXCLUSAO IS NULL")
+@SQLDelete(sql = "UPDATE RESPONSAVEL SET DATA_EXCLUSAO=CURRENT_TIMESTAMP WHERE ID=?")
 public class Responsavel {
 
   @Setter
@@ -31,21 +35,24 @@ public class Responsavel {
   private String nome;
 
   @CreatedDate
-  @Column(name = "CREATED_AT", nullable = false, updatable = false)
-  private LocalDateTime createdAt;
+  @Column(name = "DATA_CRIACAO", nullable = false, updatable = false)
+  private LocalDateTime dataCriacao;
 
   @UpdateTimestamp
-  @Column(name = "UPDATED_AT", nullable = false)
-  private LocalDateTime updatedAt;
+  @Column(name = "DATA_ATUALIZACAO", nullable = false)
+  private LocalDateTime dataAtualizacao;
+
+  @Column(name = "DATA_EXCLUSAO", nullable = true)
+  private LocalDateTime dataExclusao;
 
   public Responsavel(String nome) {
     this.nome = nome;
-    this.createdAt = LocalDateTime.now();
-    this.updatedAt = LocalDateTime.now();
+    this.dataCriacao = LocalDateTime.now();
+    this.dataAtualizacao = LocalDateTime.now();
   }
 
   public void setNome(String nome) {
     this.nome = nome;
-    this.updatedAt = LocalDateTime.now();
+    this.dataAtualizacao = LocalDateTime.now();
   }
 }

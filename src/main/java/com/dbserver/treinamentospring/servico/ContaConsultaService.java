@@ -3,7 +3,6 @@ package com.dbserver.treinamentospring.servico;
 import com.dbserver.treinamentospring.dominio.Conta;
 import com.dbserver.treinamentospring.infra.IContaConsultaRepository;
 import java.util.List;
-import javax.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
