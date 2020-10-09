@@ -58,7 +58,6 @@ public class Conta {
   @Column(name = "DATA_ATUALIZACAO", nullable = false)
   private LocalDateTime dataAtualizacao;
 
-  @UpdateTimestamp
   @Column(name = "DATA_EXCLUSAO")
   private LocalDateTime dataExclusao;
 

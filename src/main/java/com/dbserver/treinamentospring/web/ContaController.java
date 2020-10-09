@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,8 +40,8 @@ public class ContaController {
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 
-  @DeleteMapping()
-  public ResponseEntity<Void> excluirConta(@RequestParam @NotNull Long idConta) {
+  @DeleteMapping("/{idConta}")
+  public ResponseEntity<Void> excluirConta(@PathVariable Long idConta) {
     this.contaService.excluirConta(idConta);
 
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

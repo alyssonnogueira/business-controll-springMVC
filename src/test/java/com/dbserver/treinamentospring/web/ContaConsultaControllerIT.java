@@ -7,10 +7,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.dbserver.treinamentospring.dominio.enumeradores.TipoContaEnum;
-import com.dbserver.treinamentospring.infra.IContaConsultaRepository;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -20,9 +18,6 @@ class ContaConsultaControllerIT extends BaseControllerIT {
   private static final String REMOVER_RESPONSAVEIS = "../sql/removerResponsaveis.sql";
   private static final String INSERIR_CONTAS = "../sql/inserirContas.sql";
   private static final String REMOVER_CONTAS = "../sql/removerContas.sql";
-
-  @Autowired
-  IContaConsultaRepository contaConsultaRepository;
 
   @Test
   @Sql(value = { INSERIR_RESPONSAVEIS, INSERIR_CONTAS },
