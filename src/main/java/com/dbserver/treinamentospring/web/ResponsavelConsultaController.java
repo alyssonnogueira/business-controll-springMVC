@@ -2,7 +2,6 @@ package com.dbserver.treinamentospring.web;
 
 import com.dbserver.treinamentospring.dominio.Responsavel;
 import com.dbserver.treinamentospring.servico.IResponsavelConsultaService;
-import com.sun.istack.NotNull;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
