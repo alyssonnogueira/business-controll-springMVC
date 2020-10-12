@@ -39,7 +39,7 @@ public class TransacaoService implements ITransacaoService {
     Responsavel responsavel =
         this.responsavelConsultaRepository.obterResponsavel(despesaDTO.getIdResponsavel());
     Conta conta = this.contaConsultaRepository.obterConta(despesaDTO.getIdConta());
-    Despesa despesa =
+    Transacao despesa =
         new Despesa(
             despesaDTO.getData(),
             despesaDTO.getValor(),
@@ -55,7 +55,7 @@ public class TransacaoService implements ITransacaoService {
     Responsavel responsavel =
         this.responsavelConsultaRepository.obterResponsavel(receitaDTO.getIdResponsavel());
     Conta conta = this.contaConsultaRepository.obterConta(receitaDTO.getIdConta());
-    Receita receita =
+    Transacao receita =
         new Receita(
             receitaDTO.getData(),
             receitaDTO.getValor(),
@@ -72,7 +72,7 @@ public class TransacaoService implements ITransacaoService {
         this.responsavelConsultaRepository.obterResponsavel(transferenciaDTO.getIdResponsavel());
     Conta conta = this.contaConsultaRepository.obterConta(transferenciaDTO.getIdConta());
     Conta contaDestino = this.contaConsultaRepository.obterConta(transferenciaDTO.getIdContaDestino());
-    Transferencia transferencia =
+    Transacao transferencia =
         new Transferencia(
             transferenciaDTO.getData(),
             transferenciaDTO.getValor(),

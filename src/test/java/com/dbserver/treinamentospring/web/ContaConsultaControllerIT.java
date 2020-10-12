@@ -28,8 +28,13 @@ class ContaConsultaControllerIT extends BaseControllerIT {
     mvc.perform(get("/v1/contas/")
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.[*]", hasSize(1)))
-        .andExpect(jsonPath("$.[*].nome", containsInAnyOrder("Alysson")));
+        .andExpect(jsonPath("$.[*]", hasSize(2)))
+        .andExpect(jsonPath("$.[*].nome", containsInAnyOrder("Conta Digital", "Conta Corrente")))
+        .andExpect(jsonPath("$.[*].saldoInicial", containsInAnyOrder(100.0, 100.0)))
+        .andExpect(jsonPath("$.[*].saldo", containsInAnyOrder(100.0, 100.0)))
+        .andExpect(jsonPath("$.[*].tipoConta", containsInAnyOrder(TipoContaEnum.DEBITO.name(), TipoContaEnum.DEBITO.name())))
+        .andExpect(jsonPath("$.[*].dataCriacao", containsInAnyOrder("2020-10-09T01:41:51", "2020-10-09T01:41:51")))
+        .andExpect(jsonPath("$.[*].dataAtualizacao", containsInAnyOrder("2020-10-09T01:41:51", "2020-10-09T01:41:51")));
   }
 
   @Test
@@ -42,7 +47,7 @@ class ContaConsultaControllerIT extends BaseControllerIT {
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id", Matchers.is(1)))
-        .andExpect(jsonPath("$.nome", Matchers.is("Alysson")))
+        .andExpect(jsonPath("$.nome", Matchers.is("Conta Digital")))
         .andExpect(jsonPath("$.saldoInicial", Matchers.is(100.0)))
         .andExpect(jsonPath("$.saldo", Matchers.is(100.0)))
         .andExpect(jsonPath("$.tipoConta", Matchers.is(TipoContaEnum.DEBITO.name())))

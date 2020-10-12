@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc()
 @ActiveProfiles("test")
-public abstract class BaseControllerIT {
+public class BaseControllerIT {
 
   @Autowired
   MockMvc mvc;

@@ -2,11 +2,9 @@ package com.dbserver.treinamentospring.dominio;
 
 import com.dbserver.treinamentospring.dominio.enumeradores.CategoriaReceitaEnum;
 import com.dbserver.treinamentospring.dominio.enumeradores.TipoTransacaoEnum;
-import com.dbserver.treinamentospring.dominio.eventos.CreditarSaldoEvent;
-import com.dbserver.treinamentospring.dominio.eventos.DebitarSaldoEvent;
 import com.sun.istack.NotNull;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -14,7 +12,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.domain.DomainEvents;
 
 @Entity
 @DiscriminatorValue("RECEITA")
@@ -28,7 +25,7 @@ public class Receita extends Transacao {
   private CategoriaReceitaEnum categoriaReceita;
 
   public Receita(
-      LocalDateTime data,
+      Date data,
       BigDecimal valor,
       String descricao,
       Responsavel responsavel,

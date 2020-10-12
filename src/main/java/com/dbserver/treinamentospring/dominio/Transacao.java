@@ -5,6 +5,12 @@ import com.dbserver.treinamentospring.dominio.eventos.CreditarSaldoEvent;
 import com.dbserver.treinamentospring.dominio.eventos.DebitarSaldoEvent;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
@@ -19,6 +25,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -47,7 +54,7 @@ public abstract class Transacao {
   private Long id;
 
   @CreatedDate
-  @Column(name = "DATA_TRANSACAO", nullable = false, updatable = false)
+  @Column(name = "DATA_TRANSACAO", nullable = false)
   private LocalDateTime data;
 
   @Column(name = "VALOR", nullable = false)
@@ -76,18 +83,21 @@ public abstract class Transacao {
   @Column(name = "DATA_ATUALIZACAO", nullable = false)
   private LocalDateTime dataAtualizacao;
 
-  @UpdateTimestamp
   @Column(name = "DATA_EXCLUSAO")
   private LocalDateTime dataExclusao;
 
+  @Transient
+  private final List<Object> events = new ArrayList<>();
+
   protected Transacao(
-      LocalDateTime data,
+      Date data,
       BigDecimal valor,
       String descricao,
       Responsavel responsavel,
       Conta conta,
       TipoTransacaoEnum tipoTransacao) {
-    this.data = data;
+    super();
+    this.data = LocalDateTime.ofInstant(data.toInstant(), ZoneId.of("America/Sao_Paulo"));
     this.valor = valor;
     this.descricao = descricao;
     this.responsavel = responsavel;
@@ -97,14 +107,17 @@ public abstract class Transacao {
     this.dataAtualizacao = LocalDateTime.now();
   }
 
-  @DomainEvents
-  protected DebitarSaldoEvent debitarSaldo(Conta conta) {
-    return new DebitarSaldoEvent(conta, this.getValor());
+  protected void debitarSaldo(Conta conta) {
+    this.events.add(new DebitarSaldoEvent(conta, this.getValor()));
+  }
+
+  protected void creditarSaldo(Conta conta) {
+    this.events.add(new CreditarSaldoEvent(conta, this.getValor()));
   }
 
   @DomainEvents
-  protected CreditarSaldoEvent creditarSaldo(Conta conta) {
-    return new CreditarSaldoEvent(conta, this.getValor());
+  public Collection<Object> eventoAlterarSaldoConta() {
+    return events;
   }
 
   public void excluirTransacao() {

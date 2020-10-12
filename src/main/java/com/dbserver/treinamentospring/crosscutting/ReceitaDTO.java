@@ -4,7 +4,7 @@ import com.dbserver.treinamentospring.dominio.enumeradores.CategoriaReceitaEnum;
 import com.dbserver.treinamentospring.dominio.enumeradores.TipoTransacaoEnum;
 import com.sun.istack.NotNull;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,14 +16,16 @@ import lombok.Setter;
 @Setter
 public class ReceitaDTO extends TransacaoDTO {
 
-  @NotNull
-  CategoriaReceitaEnum categoriaReceita;
+  @NotNull CategoriaReceitaEnum categoriaReceita;
 
-  public ReceitaDTO(LocalDateTime data, BigDecimal valor,
-      String descricao, Long idResponsavel, Long idConta,
-      TipoTransacaoEnum tipoTransacao,
+  public ReceitaDTO(
+      Date data,
+      BigDecimal valor,
+      String descricao,
+      Long idResponsavel,
+      Long idConta,
       CategoriaReceitaEnum categoriaReceita) {
-    super(data, valor, descricao, idResponsavel, idConta, tipoTransacao);
+    super(data, valor, descricao, idResponsavel, idConta, TipoTransacaoEnum.RECEITA);
     this.categoriaReceita = categoriaReceita;
   }
 }

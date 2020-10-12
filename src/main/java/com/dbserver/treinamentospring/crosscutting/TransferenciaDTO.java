@@ -3,7 +3,7 @@ package com.dbserver.treinamentospring.crosscutting;
 import com.dbserver.treinamentospring.dominio.enumeradores.TipoTransacaoEnum;
 import com.sun.istack.NotNull;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,14 +15,16 @@ import lombok.Setter;
 @Setter
 public class TransferenciaDTO extends TransacaoDTO {
 
-  @NotNull
-  Long idContaDestino;
+  @NotNull Long idContaDestino;
 
-  public TransferenciaDTO(LocalDateTime data, BigDecimal valor,
-      String descricao, Long idResponsavel, Long idConta,
-      TipoTransacaoEnum tipoTransacao,
+  public TransferenciaDTO(
+      Date data,
+      BigDecimal valor,
+      String descricao,
+      Long idResponsavel,
+      Long idConta,
       Long idContaDestino) {
-    super(data, valor, descricao, idResponsavel, idConta, tipoTransacao);
+    super(data, valor, descricao, idResponsavel, idConta, TipoTransacaoEnum.TRANSFERENCIA);
     this.idContaDestino = idContaDestino;
   }
 }

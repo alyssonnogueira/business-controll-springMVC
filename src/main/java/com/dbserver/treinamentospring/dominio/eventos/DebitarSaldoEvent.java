@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class DebitarSaldoEvent {
 
-  private Conta conta;
+  private final Conta conta;
   BigDecimal valor;
 
   public DebitarSaldoEvent(Conta conta, BigDecimal valor) {

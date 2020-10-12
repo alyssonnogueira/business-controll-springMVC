@@ -9,13 +9,14 @@ import com.dbserver.treinamentospring.dominio.enumeradores.CategoriaDespesaEnum;
 import com.dbserver.treinamentospring.dominio.enumeradores.CategoriaReceitaEnum;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class TransacaoDataProvider {
 
   public static Despesa criarDespesa() {
     Responsavel responsavel = ResponsavelDataProvider.criarResponsavel();
     Conta conta = ContaDataProvider.criarConta();
-    LocalDateTime dataTransacao = LocalDateTime.now();
+    Date dataTransacao = new Date();
     BigDecimal valorTransacao = BigDecimal.valueOf(100);
     String descricaoDespesa = "Comida";
     CategoriaDespesaEnum categoriaDespesa = CategoriaDespesaEnum.ALIMENTACAO;
@@ -29,7 +30,7 @@ public class TransacaoDataProvider {
   public static Receita criarReceita() {
     Responsavel responsavel = ResponsavelDataProvider.criarResponsavel();
     Conta conta = ContaDataProvider.criarConta();
-    LocalDateTime dataTransacao = LocalDateTime.now();
+    Date dataTransacao = new Date();
     BigDecimal valorTransacao = BigDecimal.valueOf(100);
     String descricaoReceita = "Salário";
     CategoriaReceitaEnum categoriaReceita = CategoriaReceitaEnum.SALARIO;
@@ -43,7 +44,7 @@ public class TransacaoDataProvider {
   public static Transferencia criarTransferencia() {
     Responsavel responsavel = ResponsavelDataProvider.criarResponsavel();
     Conta conta = ContaDataProvider.criarConta();
-    LocalDateTime dataTransacao = LocalDateTime.now();
+    Date dataTransacao = new Date();
     BigDecimal valorTransacao = BigDecimal.valueOf(100);
     String descricaoTransferencia = "Poupanca";
     Conta contaDestino = ContaDataProvider.criarConta("Porquinho");

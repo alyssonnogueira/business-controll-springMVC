@@ -22,6 +22,7 @@ import com.dbserver.treinamentospring.infra.ITransacaoConsultaRepository;
 import com.dbserver.treinamentospring.infra.ITransacaoRepository;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Date;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -45,12 +46,11 @@ class TransacaoServiceTest {
   void deveVerificarACriacaoDeUmaDespesa() {
     DespesaDTO despesaDTO =
         new DespesaDTO(
-            LocalDateTime.now(),
+            new Date(),
             BigDecimal.TEN,
             "descricao",
             1L,
             1L,
-            TipoTransacaoEnum.DESPESA,
             CategoriaDespesaEnum.ALIMENTACAO);
 
     when(responsavelConsultaRepository.obterResponsavel(1L))
@@ -67,12 +67,11 @@ class TransacaoServiceTest {
   void deveVerificarACriacaoDeUmaReceita() {
     ReceitaDTO receitaDTO =
         new ReceitaDTO(
-            LocalDateTime.now(),
+            new Date(),
             BigDecimal.TEN,
             "descricao",
             1L,
             1L,
-            TipoTransacaoEnum.DESPESA,
             CategoriaReceitaEnum.SALARIO);
 
     when(responsavelConsultaRepository.obterResponsavel(1L))
@@ -89,12 +88,11 @@ class TransacaoServiceTest {
   void deveVerificarACriacaoDeUmaTransferencia() {
     TransferenciaDTO transferenciaDTO =
         new TransferenciaDTO(
-            LocalDateTime.now(),
+            new Date(),
             BigDecimal.TEN,
             "descricao",
             1L,
             1L,
-            TipoTransacaoEnum.DESPESA,
             2L);
 
     when(responsavelConsultaRepository.obterResponsavel(1L))

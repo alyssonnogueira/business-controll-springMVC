@@ -90,6 +90,6 @@ class ContaControllerIT extends BaseControllerIT {
 
     List<Conta> contas = contaConsultaRepository.obterTodasAsContas();
 
-    assertEquals(0, contas.size());
+    assertEquals(1, contas.size());
   }
 }

@@ -13,12 +13,14 @@ import com.dbserver.treinamentospring.dominio.enumeradores.TipoContaEnum;
 import com.dbserver.treinamentospring.dominio.enumeradores.TipoTransacaoEnum;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import org.junit.jupiter.api.Test;
 
 class TransacaoTest {
   private final Responsavel responsavel = ResponsavelDataProvider.criarResponsavel();
   private final Conta conta = ContaDataProvider.criarConta();
-  private final LocalDateTime dataTransacao = LocalDateTime.now();
+  private final Date dataTransacao = new Date();
   private final BigDecimal valorTransacao = BigDecimal.valueOf(100);
 
   @Test
@@ -32,7 +34,7 @@ class TransacaoTest {
 
     assertEquals(conta, transacao.getConta());
     assertEquals(responsavel, transacao.getResponsavel());
-    assertEquals(dataTransacao, transacao.getData());
+    assertEquals(LocalDateTime.ofInstant(dataTransacao.toInstant(), ZoneId.of("America/Sao_Paulo")), transacao.getData());
     assertNotNull(transacao.getDataCriacao());
     assertNotNull(transacao.getDataAtualizacao());
     assertNull(transacao.getDataExclusao());
@@ -50,7 +52,7 @@ class TransacaoTest {
             dataTransacao, valorTransacao, descricaoDespesa, responsavel, conta, categoriaDespesa);
 
     assertEquals(TipoTransacaoEnum.DESPESA, despesa.getTipoTransacao());
-    assertEquals(CategoriaDespesaEnum.ALIMENTACAO, despesa.getCategoriaDespesaEnum());
+    assertEquals(CategoriaDespesaEnum.ALIMENTACAO, despesa.getCategoriaDespesa());
   }
 
   @Test

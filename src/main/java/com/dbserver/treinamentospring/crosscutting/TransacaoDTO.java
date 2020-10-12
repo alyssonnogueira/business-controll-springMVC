@@ -3,7 +3,7 @@ package com.dbserver.treinamentospring.crosscutting;
 import com.dbserver.treinamentospring.dominio.enumeradores.TipoTransacaoEnum;
 import com.sun.istack.NotNull;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ import lombok.Setter;
 abstract class TransacaoDTO {
 
   @NotNull
-  LocalDateTime data;
+  Date data;
 
   @NotNull
   BigDecimal valor;
