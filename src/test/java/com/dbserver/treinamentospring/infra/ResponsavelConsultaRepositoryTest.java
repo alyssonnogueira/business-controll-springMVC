@@ -5,9 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
-import com.dbserver.treinamentospring.dataprovider.ContaDataProvider;
 import com.dbserver.treinamentospring.dataprovider.ResponsavelDataProvider;
-import com.dbserver.treinamentospring.dominio.Conta;
 import com.dbserver.treinamentospring.dominio.Responsavel;
 import com.dbserver.treinamentospring.infra.ResponsavelConsultaRepository.ResponsavelJpaRepository;
 import java.util.ArrayList;
@@ -41,7 +39,7 @@ class ResponsavelConsultaRepositoryTest {
   @Test
   void deveObterTodosOsResponsaveis() {
     Responsavel responsavel = ResponsavelDataProvider.criarResponsavel();
-    ArrayList arrayList = new ArrayList<Conta>();
+    ArrayList arrayList = new ArrayList<Responsavel>();
     arrayList.add(responsavel);
     when(responsavelJpaRepository.findAll()).thenReturn(arrayList);
 
@@ -52,7 +50,7 @@ class ResponsavelConsultaRepositoryTest {
 
   @Test
   void AoObterTodosOsResponsaveisDeveRetornarArrayVazio() {
-    ArrayList arrayList = new ArrayList<Conta>();
+    ArrayList arrayList = new ArrayList<Responsavel>();
     when(responsavelJpaRepository.findAll()).thenReturn(arrayList);
 
     List<Responsavel> listaDeResponsaveis = this.responsavelConsultaRepository.obterTodosOsResponsaveis();
