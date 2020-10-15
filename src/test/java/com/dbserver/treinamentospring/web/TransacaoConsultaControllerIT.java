@@ -9,6 +9,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.dbserver.treinamentospring.dominio.enumeradores.CategoriaDespesaEnum;
 import com.dbserver.treinamentospring.dominio.enumeradores.CategoriaReceitaEnum;
 import com.dbserver.treinamentospring.dominio.enumeradores.TipoTransacaoEnum;
+import java.time.LocalDate;
+import java.util.Date;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -24,34 +26,101 @@ class TransacaoConsultaControllerIT extends BaseControllerIT {
   private static final String REMOVER_TRANSACOES = "../sql/removerTransacoes.sql";
 
   @Test
-  @Sql(value = { INSERIR_RESPONSAVEIS, INSERIR_CONTAS, INSERIR_TRANSACOES },
+  @Sql(
+      value = {INSERIR_RESPONSAVEIS, INSERIR_CONTAS, INSERIR_TRANSACOES},
       executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-  @Sql(value = { REMOVER_TRANSACOES, REMOVER_CONTAS, REMOVER_RESPONSAVEIS }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+  @Sql(
+      value = {REMOVER_TRANSACOES, REMOVER_CONTAS, REMOVER_RESPONSAVEIS},
+      executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
   void deveListarTodasAsTransacoes() throws Exception {
 
-    mvc.perform(get("/v1/transacoes/")
-        .contentType(MediaType.APPLICATION_JSON))
+    mvc.perform(get("/v1/transacoes/").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.[*]", hasSize(3)))
         .andExpect(jsonPath("$.[*].id", containsInAnyOrder(1, 2, 3)))
-        .andExpect(jsonPath("$.[*].data", containsInAnyOrder("2020-11-09T10:15:00", "2020-11-09T10:15:00", "2020-11-09T10:15:00")))
+        .andExpect(
+            jsonPath(
+                "$.[*].data",
+                containsInAnyOrder(
+                    "2020-11-09T10:15:00", "2020-11-09T10:15:00", "2020-11-09T10:15:00")))
         .andExpect(jsonPath("$.[*].valor", containsInAnyOrder(100.0, 100.0, 100.0)))
-        .andExpect(jsonPath("$.[*].descricao", containsInAnyOrder("Comprei algo", "Salario", "Poupanca")))
-        .andExpect(jsonPath("$.[*].responsavel.nome", containsInAnyOrder("Alysson", "Alysson", "Alysson")))
-        .andExpect(jsonPath("$.[*].conta.nome", containsInAnyOrder("Conta Digital", "Conta Digital", "Conta Digital")))
-        .andExpect(jsonPath("$.[*].tipoTransacao", containsInAnyOrder(TipoTransacaoEnum.DESPESA.name(), TipoTransacaoEnum.RECEITA.name(), TipoTransacaoEnum.TRANSFERENCIA.name())))
-        .andExpect(jsonPath("$.[*].dataCriacao", containsInAnyOrder("2020-11-09T10:30:00", "2020-11-09T10:30:00", "2020-11-09T10:30:00")))
-        .andExpect(jsonPath("$.[*].dataAtualizacao", containsInAnyOrder("2020-11-09T10:30:00", "2020-11-09T10:30:00", "2020-11-09T10:30:00")));
+        .andExpect(
+            jsonPath("$.[*].descricao", containsInAnyOrder("Comprei algo", "Salario", "Poupanca")))
+        .andExpect(
+            jsonPath("$.[*].responsavel.nome", containsInAnyOrder("Alysson", "Alysson", "Alysson")))
+        .andExpect(
+            jsonPath(
+                "$.[*].conta.nome",
+                containsInAnyOrder("Conta Digital", "Conta Digital", "Conta Digital")))
+        .andExpect(
+            jsonPath(
+                "$.[*].tipoTransacao",
+                containsInAnyOrder(
+                    TipoTransacaoEnum.DESPESA.name(),
+                    TipoTransacaoEnum.RECEITA.name(),
+                    TipoTransacaoEnum.TRANSFERENCIA.name())))
+        .andExpect(
+            jsonPath(
+                "$.[*].dataCriacao",
+                containsInAnyOrder(
+                    "2020-11-09T10:30:00", "2020-11-09T10:30:00", "2020-11-09T10:30:00")))
+        .andExpect(
+            jsonPath(
+                "$.[*].dataAtualizacao",
+                containsInAnyOrder(
+                    "2020-11-09T10:30:00", "2020-11-09T10:30:00", "2020-11-09T10:30:00")));
   }
 
   @Test
-  @Sql(value = { INSERIR_RESPONSAVEIS, INSERIR_CONTAS, INSERIR_TRANSACOES },
+  @Sql(
+      value = {INSERIR_RESPONSAVEIS, INSERIR_CONTAS, INSERIR_TRANSACOES},
       executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-  @Sql(value = { REMOVER_TRANSACOES, REMOVER_CONTAS, REMOVER_RESPONSAVEIS }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+  @Sql(
+      value = {REMOVER_TRANSACOES, REMOVER_CONTAS, REMOVER_RESPONSAVEIS},
+      executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+  void deveListarTodasAsTransacoesComFiltro() throws Exception {
+
+    mvc.perform(
+            get("/v1/transacoes/paginado")
+                .param("descricaoCategoria", "a")
+                .param("idsResponsaveis", "1", "2")
+                .param("idsContas", "1", "2")
+                .param("tiposTransacao", "DESPESA")
+                .param("dataInicial", "2020-01-30")
+                .param("dataFinal", "2020-11-30")
+                .param("dataFinal", "2020-11-30")
+                .param("pagina", "0")
+                .param("limite", "3")
+                .param("ordem", "DESC")
+                .param("colunaDeOrdenacao", "data")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.content.[*]", hasSize(1)))
+        .andExpect(jsonPath("$.content.[*].id", containsInAnyOrder(1)))
+        .andExpect(jsonPath("$.content.[*].data", containsInAnyOrder("2020-11-09T10:15:00")))
+        .andExpect(jsonPath("$.content.[*].valor", containsInAnyOrder(100.0)))
+        .andExpect(jsonPath("$.content.[*].descricao", containsInAnyOrder("Comprei algo")))
+        .andExpect(jsonPath("$.content.[*].responsavel.nome", containsInAnyOrder("Alysson")))
+        .andExpect(jsonPath("$.content.[*].conta.nome", containsInAnyOrder("Conta Digital")))
+        .andExpect(
+            jsonPath(
+                "$.content.[*].tipoTransacao",
+                containsInAnyOrder(TipoTransacaoEnum.DESPESA.name())))
+        .andExpect(jsonPath("$.content.[*].dataCriacao", containsInAnyOrder("2020-11-09T10:30:00")))
+        .andExpect(
+            jsonPath("$.content.[*].dataAtualizacao", containsInAnyOrder("2020-11-09T10:30:00")));
+  }
+
+  @Test
+  @Sql(
+      value = {INSERIR_RESPONSAVEIS, INSERIR_CONTAS, INSERIR_TRANSACOES},
+      executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+  @Sql(
+      value = {REMOVER_TRANSACOES, REMOVER_CONTAS, REMOVER_RESPONSAVEIS},
+      executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
   void deveBuscarUmaTransacaoComTipoDebito() throws Exception {
 
-    mvc.perform(get("/v1/transacoes/1")
-        .contentType(MediaType.APPLICATION_JSON))
+    mvc.perform(get("/v1/transacoes/1").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id", Matchers.is(1)))
         .andExpect(jsonPath("$.data", Matchers.is("2020-11-09T10:15:00")))
@@ -62,17 +131,20 @@ class TransacaoConsultaControllerIT extends BaseControllerIT {
         .andExpect(jsonPath("$.tipoTransacao", Matchers.is(TipoTransacaoEnum.DESPESA.name())))
         .andExpect(jsonPath("$.dataCriacao", Matchers.is("2020-11-09T10:30:00")))
         .andExpect(jsonPath("$.dataAtualizacao", Matchers.is("2020-11-09T10:30:00")))
-        .andExpect(jsonPath("$.categoriaDespesa", Matchers.is(CategoriaDespesaEnum.ALIMENTACAO.name())));
+        .andExpect(
+            jsonPath("$.categoriaDespesa", Matchers.is(CategoriaDespesaEnum.ALIMENTACAO.name())));
   }
 
   @Test
-  @Sql(value = { INSERIR_RESPONSAVEIS, INSERIR_CONTAS, INSERIR_TRANSACOES },
+  @Sql(
+      value = {INSERIR_RESPONSAVEIS, INSERIR_CONTAS, INSERIR_TRANSACOES},
       executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-  @Sql(value = { REMOVER_TRANSACOES, REMOVER_CONTAS, REMOVER_RESPONSAVEIS }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+  @Sql(
+      value = {REMOVER_TRANSACOES, REMOVER_CONTAS, REMOVER_RESPONSAVEIS},
+      executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
   void deveBuscarUmaTransacaoComTipoReceita() throws Exception {
 
-    mvc.perform(get("/v1/transacoes/2")
-        .contentType(MediaType.APPLICATION_JSON))
+    mvc.perform(get("/v1/transacoes/2").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id", Matchers.is(2)))
         .andExpect(jsonPath("$.data", Matchers.is("2020-11-09T10:15:00")))
@@ -83,17 +155,20 @@ class TransacaoConsultaControllerIT extends BaseControllerIT {
         .andExpect(jsonPath("$.tipoTransacao", Matchers.is(TipoTransacaoEnum.RECEITA.name())))
         .andExpect(jsonPath("$.dataCriacao", Matchers.is("2020-11-09T10:30:00")))
         .andExpect(jsonPath("$.dataAtualizacao", Matchers.is("2020-11-09T10:30:00")))
-        .andExpect(jsonPath("$.categoriaReceita", Matchers.is(CategoriaReceitaEnum.SALARIO.name())));
+        .andExpect(
+            jsonPath("$.categoriaReceita", Matchers.is(CategoriaReceitaEnum.SALARIO.name())));
   }
 
   @Test
-  @Sql(value = { INSERIR_RESPONSAVEIS, INSERIR_CONTAS, INSERIR_TRANSACOES },
+  @Sql(
+      value = {INSERIR_RESPONSAVEIS, INSERIR_CONTAS, INSERIR_TRANSACOES},
       executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-  @Sql(value = { REMOVER_TRANSACOES, REMOVER_CONTAS, REMOVER_RESPONSAVEIS }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+  @Sql(
+      value = {REMOVER_TRANSACOES, REMOVER_CONTAS, REMOVER_RESPONSAVEIS},
+      executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
   void deveBuscarUmaTransacaoComTipoTransferencia() throws Exception {
 
-    mvc.perform(get("/v1/transacoes/3")
-        .contentType(MediaType.APPLICATION_JSON))
+    mvc.perform(get("/v1/transacoes/3").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id", Matchers.is(3)))
         .andExpect(jsonPath("$.data", Matchers.is("2020-11-09T10:15:00")))
