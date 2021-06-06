@@ -1,12 +1,11 @@
 package com.dbserver.treinamentospring.servico;
 
 import lombok.val;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 import static java.lang.System.out;
 
@@ -32,13 +31,19 @@ public class SorteioAmigoSecretoService implements ISorteioAmigoSecretoService {
                         amigosSorteados.put(amigo, amigos.get(numero));
                     } else {
                         out.println("Repete sorteio para: " + amigo);
-                        out.println("ultimo valor: " + amigos.get(numero));
+                        out.println("ultimo sorteio: " + amigos.get(numero));
                     }
                 }
             }
             sorteioValido = verificaSeSorteioEhValido(amigosSorteados);
         } while (!sorteioValido);
 
+        amigosSorteados.forEach((key, value) -> {
+            val hash = Base64.encodeBase64(value.getBytes(StandardCharsets.UTF_8));
+            val hashString = new String(hash, StandardCharsets.UTF_8);
+            val url = "http://bc.pyramitec.com/sorteio/" + hashString;
+            amigosSorteados.replace(key, url);
+        });
         return amigosSorteados;
     }
 
